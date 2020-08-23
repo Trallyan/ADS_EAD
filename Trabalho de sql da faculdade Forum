@@ -1,0 +1,49 @@
+CREATE DATABASE IF NOT EXISTS db_predio
+DEFAULT CHARSET 'utf8'
+DEFAULT COLLATE 'utf8_general_ci';
+
+USE db_predio;
+
+CREATE TABLE apartamento(
+numero INT(3) NOT NULL,
+andar INT(3) NOT NULL,
+proprietario VARCHAR(50) NOT NULL, 
+telefone VARCHAR(20) NOT NULL,
+PRIMARY KEY (numero) 
+)DEFAULT CHARSET = utf8;
+
+DESCRIBE apartamento;
+
+CREATE TABLE visitantes(
+id INT NOT NULL AUTO_INCREMENT ,
+rg VARCHAR(20) NOT NULL,
+nome VARCHAR(50) NOT NULL,
+dia DATE NOT NULL,
+hora TIME NOT NULL,
+numero_ap INT(3) NOT NULL,
+PRIMARY KEY (id),
+FOREIGN KEY (numero_ap)
+REFERENCES numero(apartamento)
+)DEFAULT CHARSET = utf8;
+ 
+INSERT INTO apartamento
+(numero, andar, proprietario, telefone) 
+VALUES 
+('10', '1' , 'Maria Pereira da Silva', '(14)99797-9797'),
+('13', '2', 'Ariovaldo Martins Costa', '(15)99797-9796'),
+('11', '1', 'Gloria Aparecida Coelho', '(27)99797-9795');
+
+INSERT INTO visitantes
+(rg, nome, dia, hora, numero_ap)
+VALUES  
+('42.123.123-3', 'Juriscreide Melo', '2020-08-10', '13:40:00', '11'),
+('42.123.123-3', 'Juriscreide Melo', '2020-08-14', '13:40:00', '11'),
+('42.123.123-1', 'Fabiano Ferreira', '2020-08-19', '10:20:00', '13'),
+('42.123.123-2', 'Greg sa Silva', '2020-08-13', '13:40:00', '11'),
+('42.123.123-3', 'Juriscreide Melo', '2020-08-14', '13:40:00', '11'),
+('42.123.123-4', 'Jurema de Fatima', '2020-08-15', '20:13:12', '10');
+
+SELECT  apartamento.proprietario, visitantes.numero_ap, visitantes.nome, visitantes.dia, visitantes.hora 
+FROM apartamento JOIN visitantes
+ON apartamento.numero = visitantes.numero_ap
+ORDER BY dia;
